@@ -1,0 +1,27 @@
+extends ./layout
+
+block content
+  div(class="container")
+    h2= title
+    if tag
+      div(class="chip light-blue lighten-4")= tag
+        i(class="close material-icons") close
+    if products.length
+      table
+        head
+          tr
+            th Код товара
+            th Наименование
+            th Цена
+        tbody
+          for item in products
+            tr
+              td #{item.prodCode}
+              td #{item.name}
+              td #{item.price}
+              td
+                form(action="/add" method="post")
+                  input(type="hidden" name="id" value="#{item._id}")
+                  button(type="submit" class="btn btn-small") Добавить в корзину       
+    else
+      p Список товаров пуст

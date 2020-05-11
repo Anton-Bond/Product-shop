@@ -1,0 +1,27 @@
+extends ./layout
+
+block content
+  div(class="container")
+    h2= title
+    if cart.length
+      table
+        head
+          tr
+            th Код товара
+            th Наименование
+            th Количество
+            th Цена
+        tbody
+
+          for item in cart
+            tr
+              td #{item.productId.prodCode}
+              td #{item.productId.name}
+              td #{item.count}
+              td #{item.productId.price * item.count}
+              td
+                form(action="/cart" method="post")
+                  input(type="hidden" name="id" value="#{item._id}")
+                  button(type="submit" class="btn btn-small red") Удалить из корзины
+    else
+      p Корзина пуста
