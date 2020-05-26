@@ -6,4 +6,5 @@ const productSchema = new Schema({
   price: Number
 });
 
+
 module.exports = model('Product', productSchema);
