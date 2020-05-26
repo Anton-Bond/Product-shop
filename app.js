@@ -1,22 +1,19 @@
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
 // config file data base
 const db = require('./config/db');
-const indexRoutes = require('./routes/index');
+const productsRoutes = require('./routes/products');
 const cartRoutes = require('./routes/cart');
+const bodyParser = require('body-parser');
 
-const app = express();
-// use jade engine
-app.set('view engine', 'jade');
-// folder of tamplates
-app.set('views', path.join(__dirname, 'views'));
-// looks additional files
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.urlencoded({extended: true}));
+const app = express();  
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(require('cors')());
 
 // routes
-app.use('/', indexRoutes);
+app.use('/products', productsRoutes);
 app.use('/cart', cartRoutes);
 
 // catch 404 and forward to error handler
