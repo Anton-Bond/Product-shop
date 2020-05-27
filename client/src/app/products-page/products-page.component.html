@@ -1,0 +1,34 @@
+<h2>Список продуктов</h2>
+
+<div *ngIf="!isLoaded">Загрузка...</div>
+<div *ngIf="isLoaded">
+  <div *ngIf="products.length; else elseBlock">
+    <!-- TABLE -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Код товара</th>
+          <th>Наименование</th>
+          <th>Цена</th>
+          <th class="text-lg-center"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products; let i=index">
+          <th scope="row" >{{i + 1}}</th>
+          <td>{{product.prodCode}}</td>
+          <td>{{product.name}}</td>
+          <td>{{product.price}}</td>
+          <td>
+            <button type="button" class="btn-small blue" (click)="addToCart(product._id)">Добавить в корзину</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #elseBlock>
+    <p>Список товаров пуст</p>
+  </ng-template>
+</div>
