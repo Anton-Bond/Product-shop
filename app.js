@@ -5,6 +5,12 @@ const cartRoutes = require('./routes/cart');
 const bodyParser = require('body-parser');
 // config file data base
 const db = require('./config/db');
+<<<<<<< HEAD
+=======
+const productsRoutes = require('./routes/products');
+const cartRoutes = require('./routes/cart');
+const bodyParser = require('body-parser');
+>>>>>>> e11d0af92ba68da4f6fcf8a24b406c1effc7eeee
 
 const app = express();  
 

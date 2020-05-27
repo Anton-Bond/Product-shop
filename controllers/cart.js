@@ -42,4 +42,8 @@ module.exports.remove = async function(req, res) {
   } catch (e) {
     console.log(e);
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e11d0af92ba68da4f6fcf8a24b406c1effc7eeee

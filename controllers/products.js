@@ -46,4 +46,8 @@ module.exports.addById = async function(req, res) {
   // } catch (e) {
   //   errorHandler(res, e)
   // }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e11d0af92ba68da4f6fcf8a24b406c1effc7eeee
