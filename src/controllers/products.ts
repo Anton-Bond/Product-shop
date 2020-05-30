@@ -1,17 +1,19 @@
-const Cart = require('../models/cart');
-const Product = require('../models/product');
+import { Request, Response } from "express";
 
-module.exports.getAll = async function(req, res) {
+import { Product } from "../models/product";
+import { Cart } from "../models/cart";
+
+export const getAll = async (req: Request, res: Response) => {
   try {
     const products = await Product.find();
     res.status(200).json(products);
   } catch (e) {
-    console.log(e);
+    res.status(404).send(e.message);
   }
 }
 
 // add to cart product's id and count it
-const addToCart = async id => {
+const addToCart = async (id: string) => {
   // if cart exit product
   const product = await Cart.findOne({productId: id});
   if (product) {
@@ -27,27 +29,16 @@ const addToCart = async id => {
   }
 }
 
-module.exports.addById = async function(req, res) {
+export const addById = async (req: Request, res: Response) => {
   const products = await Product.find();
   const product = products.find(p => p._id.toString() === req.body.id);
   if (product) {
     await addToCart(product._id);
     res.status(201).json(product);
+    // tslint:disable-next-line:no-console
     console.log(`Продукт "${product.name}" добавлен в корзину`);
   } else {
+    // tslint:disable-next-line:no-console
     console.log(`Не найден продукт с таким кодом товара`);
   }
-
-
-
-  // try {
-  //   await category.save()
-  //   res.status(201).json(category)
-  // } catch (e) {
-  //   errorHandler(res, e)
-  // }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> e11d0af92ba68da4f6fcf8a24b406c1effc7eeee
