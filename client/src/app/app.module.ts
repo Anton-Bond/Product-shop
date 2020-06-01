@@ -7,13 +7,15 @@ import { CartPageComponent } from './cart-page/cart-page.component';
 import { ProductsPageComponent } from './products-page/products-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { PaginationComponent } from './shared/pagination/pagination.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CartPageComponent,
     ProductsPageComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

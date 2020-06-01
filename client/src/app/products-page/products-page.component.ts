@@ -16,15 +16,32 @@ export class ProductsPageComponent implements OnInit {
 
   products: Product[] = [];
 
+  productsOnCurrentPage: Product[] = [];
+  // total amount of items
+  count: number = 0;
+  // offset that is used currently
+  offset: number = 0;
+  // size of each page
+  limit: number = 5;
+
   constructor(private productsService: ProductsService) { }
 
   ngOnInit() {
     this.productsService.fetch()
       .subscribe(products => {
         this.products = products;
+        this.count = this.products.length;
+        this.productsOnCurrentPage = products.slice(0, this.limit);
         // hide 'Loading...' message
         this.isLoaded = true;
       });
+
+  }
+
+
+  onPageChange(offset) {
+    this.offset = offset;
+    this.productsOnCurrentPage = this.products.slice(offset, offset + this.limit);
   }
 
   addToCart(_id: String) {

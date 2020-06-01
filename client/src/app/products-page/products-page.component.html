@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of products; let i=index">
+        <tr *ngFor="let product of productsOnCurrentPage; let i=index">
           <th scope="row" >{{i + 1}}</th>
           <td>{{product.prodCode}}</td>
           <td>{{product.name}}</td>
@@ -26,6 +26,8 @@
         </tr>
       </tbody>
     </table>
+    <!-- Pagination -->
+    <app-pagination [offset]="offset" [limit]="limit" [size]="count" (pageChange)="onPageChange($event)"></app-pagination>
   </div>
 
   <ng-template #elseBlock>
