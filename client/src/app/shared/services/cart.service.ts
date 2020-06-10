@@ -22,4 +22,8 @@ export class CartService {
     return this.http.delete(`${this.urlServer}/cart/${id}`);
   }
 
+  deleteAll() {
+    return this.http.delete(`${this.urlServer}/cart/`);
+  }
+
 }

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Product } from '../models/product.model';
+import { Order } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductsService {
+export class OrderService {
 
   urlServer = 'http://localhost:3000';
 
@@ -17,13 +17,8 @@ export class ProductsService {
 
   constructor(private http: HttpClient) { }
 
-  // get all products from DB
-  fetch(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.urlServer}/products`);
+  // save order from cart page
+  createOrder(order: Order) {
+    return this.http.post(`${this.urlServer}/cart`, order, this.httpOptions);
   }
-
-  addToCart(id: String, count: number) {
-    return this.http.post(`${this.urlServer}/products`, {id: id, count: count}, this.httpOptions);
-  }
-
 }

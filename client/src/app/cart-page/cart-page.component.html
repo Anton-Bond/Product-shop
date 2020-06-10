@@ -16,20 +16,28 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let c of cart; let i=index">
+        <tr *ngFor="let c of cartOnCurrentPage; let i=index">
           <th scope="row" >{{i + 1}}</th>
           <td>{{c.productId.prodCode}}</td>
           <td>{{c.productId.name}}</td>
           <td>{{c.count}}</td>
           <td>{{mult(c.productId.price, c.count)}}</td>
           <td>
-            <button type="button" class="btn-small red" (click)="deleteFromCart(c._id)">Удалить из корзины</button>
+            <button type="button" class="waves-effect waves-light btn-small red" (click)="deleteFromCart(c._id)">Удалить из корзины</button>
           </td>
+        </tr>
+        <tr>
+          <!-- Pagination -->
+          <app-pagination [offset]="offset" [limit]="limit" [size]="count" (pageChange)="onPageChange($event)"></app-pagination>
         </tr>
         <tr class="total">
           <td class="right-align" colspan="4">Итого:</td>
           <td>{{totalSum}}</td>
-          <td></td>
+          <td>
+            <button type="button" class="waves-effect waves-light btn-small green" (click)="onSubmit()">
+              Сделать заказ
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
