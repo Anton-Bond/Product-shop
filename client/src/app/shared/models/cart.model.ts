@@ -4,7 +4,8 @@ export class Cart {
     public productId: {
       prodCode: String,
       name: String,
-      price: number
+      price: number,
+      _id?: String
     },
     public _id?: String
 	) {}

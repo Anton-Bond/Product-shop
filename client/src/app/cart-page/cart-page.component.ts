@@ -6,6 +6,7 @@ import { CartService } from '../shared/services/cart.service';
 import { MaterialService } from '../shared/classes/material.service';
 import { OrderService } from '../shared/services/order.service';
 import { Order, OrderList } from '../shared/models/order.model';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -28,23 +29,27 @@ export class CartPageComponent implements OnInit {
   // size of each page (for example = 3)
   limit: number = 3;
 
-  // mock user id
-  userId = 123123;
+  // current user id
+  userId: String  = localStorage.getItem('userId');
 
-  constructor(private cartService: CartService,
-              private orderService: OrderService,
-              private router: Router
+  constructor(
+    private cartService: CartService,
+    private orderService: OrderService,
+    private router: Router,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
     // initialize product of cart from DB
-    this.cartService.fetch()
+    this.cartService.fetch(this.userId)
       .subscribe(cart => {
-        this.cart = cart;
-        this.totalSum = this.result(cart);
-        this.count = this.cart.length;
-        // set first of list products on current page
-        this.cartOnCurrentPage = cart.slice(0, this.limit);
+        if (cart) {
+          this.cart = cart;
+          this.totalSum = this.result(cart);
+          this.count = this.cart.length;
+          // set first of list products on current page
+          this.cartOnCurrentPage = cart.slice(0, this.limit);
+        }
         // hide 'Loading...' message
         this.isLoaded = true;
       });
@@ -58,10 +63,12 @@ export class CartPageComponent implements OnInit {
 
   deleteFromCart(_id: String) {
     // delete product and update cart
-    const idx = this.cart.findIndex(c => c._id === _id);
+    const idx = this.cart.findIndex(c => c.productId._id === _id);
     if (idx === -1) {
       MaterialService.toast('Продукт не наден в корзине.');
     } else {
+      // for output message in toast about delete product
+      const prodName = this.cart[idx].productId.name;
       if (this.cart[idx].count > 1) {
         // reduce the amount of product if more than one
         this.cart[idx].count--;
@@ -76,12 +83,12 @@ export class CartPageComponent implements OnInit {
         // recalculation of the final price
         this.totalSum = this.result(this.cart);
       }
+      // delete from DB
+      this.cartService.deleteProd(this.userId, _id)
+        .subscribe(() => {
+          MaterialService.toast(`Продукт \"${prodName}\" 1 шт удален из корзины.`);
+        });
     }
-    // delete from DB
-    this.cartService.delete(_id)
-      .subscribe((prodCart: Cart) => {
-        MaterialService.toast(`Продукт \"${prodCart.productId.name}\" удален из корзины.`);
-      });
   }
 
   // to calculate the cost
@@ -89,7 +96,7 @@ export class CartPageComponent implements OnInit {
     return x * y;
   }
 
-  result(arr): number {
+  result(arr: Cart[]): number {
     return arr.reduce((sum, c) => sum + (c.count * c.productId.price), 0);
   }
 
@@ -104,9 +111,8 @@ export class CartPageComponent implements OnInit {
     });
 
     const order = new Order(this.userId, list);
-
     // clear cart
-    this.cartService.deleteAll().subscribe(data => data);
+    this.cartService.deleteAll(this.userId).subscribe(data => data);
     // send to server
     this.orderService.createOrder(order)
       .subscribe(() => {
@@ -116,8 +122,6 @@ export class CartPageComponent implements OnInit {
           }
         })
       });
-
-
   }
 
 }

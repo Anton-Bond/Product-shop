@@ -1,0 +1,46 @@
+<h2>Информация о заказе</h2>
+
+<div *ngIf="!isLoaded">Загрузка...</div>
+<div *ngIf="isLoaded">
+  <div class="row">
+    <div class="col s12 m7">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Номер заказа: {{order.orderNum}}</span>
+          <h6>Дата заказа: {{order.date | date : 'short'}}</h6>
+
+          <!-- Table of product list -->
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Наименование продукта</th>
+                <th>Стоимость</th>
+                <th>Количество</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of order.list; let i=index">
+                <th scope="row" >{{i + 1}}</th>
+                <td>{{product.name}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.count}}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- order cost -->
+          <p><b>Стоимость закака: </b>{{orderCost}}</p>
+          <!-- about customer -->
+          <p><b>Имя клиента: </b>{{order.userId.name}}</p>
+          <div><b>Электроный ящик: </b>{{order.userId.email}}</div>
+
+        </div>
+        <div class="card-action">
+          <a routerLink="/orders">Назад к заказам</a>
+          <button type="button" class="btn-small red" (click)="removeOrder(order._id)">Удалить заказ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

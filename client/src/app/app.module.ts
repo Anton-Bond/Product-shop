@@ -8,6 +8,10 @@ import { ProductsPageComponent } from './products-page/products-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { PaginationComponent } from './shared/pagination/pagination.component';
+import { SiteLayoutComponent } from './shared/layouts/site-layout/site-layout.component';
+import { ProductComponent } from './product/product.component';
+import { OrderPageComponent } from './order-page/order-page.component';
+import { OrdersPageComponent } from './orders-page/orders-page.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +19,11 @@ import { PaginationComponent } from './shared/pagination/pagination.component';
     CartPageComponent,
     ProductsPageComponent,
     NotFoundComponent,
-    PaginationComponent
+    PaginationComponent,
+    SiteLayoutComponent,
+    ProductComponent,
+    OrderPageComponent,
+    OrdersPageComponent
   ],
   imports: [
     BrowserModule,

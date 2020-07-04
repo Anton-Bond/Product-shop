@@ -4,6 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Product } from '../shared/models/product.model';
 import { ProductsService } from '../shared/services/products.service';
 import { MaterialService } from '../shared/classes/material.service';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
   selector: 'app-products-page',
@@ -14,6 +15,8 @@ export class ProductsPageComponent implements OnInit {
 
   // for show message 'Loading...' before get data from DB
   isLoaded = false;
+  userId = localStorage.getItem('userId');
+  isAdmin: boolean = false;
 
   products: Product[] = [];
 
@@ -29,6 +32,7 @@ export class ProductsPageComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
     private route: ActivatedRoute,
+    private auth: AuthService,
   ) { }
 
   ngOnInit() {
@@ -49,6 +53,15 @@ export class ProductsPageComponent implements OnInit {
           MaterialService.toast('Ваш заказ был отправлен.');
         }
       });
+
+    // set admin parametr
+    this.isAdmin = this.auth.isAdmin();
+
+    this.route.queryParams.subscribe((params: Params) => {
+      if (params['deleteSuccess']) {
+        MaterialService.toast('Продукт был успешно удален из базы');
+      }
+    })
   }
 
   // change list of products on current page
@@ -60,7 +73,7 @@ export class ProductsPageComponent implements OnInit {
   }
 
   addToCart(_id: String, count: number) {
-    this.productsService.addToCart(_id, count)
+    this.productsService.addToCart(this.userId, _id, count)
       .subscribe((product: Product) => {
         // reset count of each product after send data to DB
         this.productsOnCurrentPage.map(p => p.count = 1);
@@ -80,6 +93,27 @@ export class ProductsPageComponent implements OnInit {
   // increment count of products to add to cart
   incCount(idx: number) {
     this.productsOnCurrentPage[idx].count++;
+  }
+
+  deleteFromList(id: String) {
+    // find index product from list
+    const idx = this.products.findIndex(p => p._id.toString() === id);
+    if (idx === -1) {
+      MaterialService.toast(`Продукт в списке не найден`)
+    } else {
+      // update product list and produc on current page
+      this.products.splice(idx, 1);
+      this.productsOnCurrentPage = this.products.slice(this.offset, this.offset + this.limit);
+      this.count = this.products.length;
+    }
+  }
+  // remove product from DB
+  removeById(id: String) {
+    this.productsService.removeById(id)
+      .subscribe((product: Product) =>{
+        this.deleteFromList(id);
+        MaterialService.toast(`Продукт \"${product.name}\" удален из базы.`);
+      });
   }
 
 }

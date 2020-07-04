@@ -22,8 +22,28 @@ export class ProductsService {
     return this.http.get<Product[]>(`${this.urlServer}/products`);
   }
 
-  addToCart(id: String, count: number) {
-    return this.http.post(`${this.urlServer}/products`, {id: id, count: count}, this.httpOptions);
+  addToCart(userId: String, productId: String, count: number) {
+    return this.http.post(`${this.urlServer}/orders`, {userId: userId, productId: productId, count: count}, this.httpOptions);
+  }
+
+  // get product by Id
+  getById(id: String): Observable<Product> {
+    return this.http.get<Product>(`${this.urlServer}/products/${id}`);
+  }
+
+  // add to DB new product
+  create(product: Product) {
+    return this.http.post<Product>(`${this.urlServer}/products`, product, this.httpOptions);
+  }
+
+  // update in product of DB
+  update(id: String, product: Product): Observable<Product> {
+    return this.http.post<Product>(`${this.urlServer}/products/${id}`, product, this.httpOptions);
+  }
+
+  // delete product from DB
+  removeById(id: String) {
+    return this.http.delete(`${this.urlServer}/products/${id}`);
   }
 
 }

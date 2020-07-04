@@ -1,0 +1,28 @@
+<nav class="purple darken-1">
+  <div class="nav-wrapper">
+    <a routerLink="/" class="brand-logo">Магазин продуктов</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+      <li routerLinkActive="active">
+        <a routerLink="/products">Список продуктов</a>
+      </li>
+
+      <li routerLinkActive="active" *ngIf="!isAdmin">
+        <a routerLink="/cart">Корзина</a>
+      </li>
+
+      <li routerLinkActive="active" *ngIf="isAdmin">
+        <a routerLink="/orders">Заказы</a>
+      </li>
+
+      <li class="bold last">
+        <a href="#" class="waves-effect waves-orange" (click)="logout($event)">Выйти</a>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

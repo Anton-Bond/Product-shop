@@ -20,14 +20,38 @@
           <td>{{product.prodCode}}</td>
           <td>{{product.name}}</td>
           <td>{{product.price}}</td>
-          <td>
-            <button type="button" class="btn-small blue" (click)="addToCart(product._id)">Добавить в корзину</button>
+          <!-- action depends from rules -->
+          <td *ngIf="!isAdmin">
+            <div class="flow-text">
+              <a class="waves-effect waves-light btn-small grey" (click)="decCount(i)">
+                <i class="material-icons">remove</i>
+              </a>
+              {{product.count}}
+              <a class="waves-effect waves-light btn-small grey" (click)="incCount(i)">
+                <i class="material-icons">add</i>
+              </a>
+            </div>
+          </td>
+          <td *ngIf="isAdmin">
+            <button type="button" class="btn-small green" routerLink="/product/{{product._id}}">Редактировать</button>
+          </td>
+          <!-- action depends from rules -->
+          <td *ngIf="!isAdmin">
+            <button type="button" class="btn-small blue" (click)="addToCart(product._id, product.count)">Добавить в корзину</button>
+          </td>
+          <td *ngIf="isAdmin">
+            <button type="button" class="btn-small red" (click)="removeById(product._id)">Удалить</button>
           </td>
         </tr>
       </tbody>
     </table>
     <!-- Pagination -->
     <app-pagination [offset]="offset" [limit]="limit" [size]="count" (pageChange)="onPageChange($event)"></app-pagination>
+  </div>
+
+  <!-- for admin -->
+  <div>
+    <button type="button" class="btn-small blue" routerLink="/product/new">+ Добавить новый продукт</button>
   </div>
 
   <ng-template #elseBlock>

@@ -1,0 +1,86 @@
+<div class="page-title">
+  <h4>
+    <a routerLink="/products">Продукты</a>
+    <i class="material-icons">keyboard_arrow_right</i>
+    {{isNew ? 'Добавить' : 'Редактировать'}} товар
+  </h4>
+  <span>
+    <button
+      *ngIf="!isNew"
+      class="btn btn-small red"
+      (click)="removeById()"
+    >
+      <i class="material-icons">delete</i>
+    </button>
+  </span>
+</div>
+
+<div class="row">
+  <form class="col s12 l6" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <div class="input-field">
+      <input
+        formControlName="prodCode"
+        id="prodCode"
+        type="text"
+        [ngClass]="{'invalid': form.get('prodCode').invalid && form.get('prodCode').touched}"
+      >
+      <label for="prodCode">Кода товара:</label>
+      <span
+        class="helper-text red-text"
+        *ngIf="form.get('prodCode').invalid && form.get('prodCode').touched"
+      >
+        <span *ngIf="form.get('prodCode').errors['required']">
+          Кода товара не может быть пустым.
+        </span>
+      </span>
+    </div>
+
+    <div class="input-field">
+      <input
+        formControlName="name"
+        id="name"
+        type="text"
+        [ngClass]="{'invalid': form.get('name').invalid && form.get('name').touched}"
+      >
+      <label for="name">Название:</label>
+      <span
+        class="helper-text red-text"
+        *ngIf="form.get('name').invalid && form.get('name').touched"
+      >
+        <span *ngIf="form.get('name').errors['required']">
+          Имя товара не может быть пустым.
+        </span>
+      </span>
+    </div>
+
+    <div class="input-field">
+      <input
+        formControlName="price"
+        id="price"
+        type="number"
+        [ngClass]="{'invalid': form.get('price').invalid && form.get('price').touched}"
+      >
+      <label for="price">Цена:</label>
+      <span
+        class="helper-text red-text"
+        *ngIf="form.get('price').invalid && form.get('price').touched"
+      >
+        <span *ngIf="form.get('price').errors['required']">
+          Цена не может быть пустой.
+        </span>
+      </span>
+    </div>
+
+    <div>
+      <button
+        type="submit"
+        [disabled]="form.invalid || form.disabled"
+        class="waves-effect waves-light btn"
+      >
+        Сохранить изменения
+      </button>
+    </div>
+  </form>
+
+</div>

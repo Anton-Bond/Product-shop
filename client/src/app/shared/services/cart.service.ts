@@ -14,16 +14,16 @@ export class CartService {
   constructor(private http: HttpClient) { }
 
   // get all products of cart from DB
-  fetch(): Observable<Cart[]> {
-    return this.http.get<Cart[]>(`${this.urlServer}/cart`);
+  fetch(userId: String): Observable<Cart[]> {
+    return this.http.get<Cart[]>(`${this.urlServer}/cart/${userId}`);
   }
 
-  delete(id: String) {
+  deleteProd(userId: String, prodId: String) {
+    return this.http.delete(`${this.urlServer}/cart?userId=${userId}&prodId=${prodId}`);
+  }
+
+  deleteAll(id: String) {
     return this.http.delete(`${this.urlServer}/cart/${id}`);
-  }
-
-  deleteAll() {
-    return this.http.delete(`${this.urlServer}/cart/`);
   }
 
 }
