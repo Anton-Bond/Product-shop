@@ -22,13 +22,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cartRoutes = void 0;
+exports.authRoutes = void 0;
 const express_1 = __importDefault(require("express"));
-const passport_1 = __importDefault(require("passport"));
-const controller = __importStar(require("../controllers/cart"));
-exports.cartRoutes = express_1.default.Router();
-exports.cartRoutes.get('/:id', passport_1.default.authenticate('jwt', { session: false }), controller.getByUserId);
-exports.cartRoutes.delete('/', passport_1.default.authenticate('jwt', { session: false }), controller.removeProd);
-exports.cartRoutes.post('/', passport_1.default.authenticate('jwt', { session: false }), controller.createOrder);
-exports.cartRoutes.delete('/:id', passport_1.default.authenticate('jwt', { session: false }), controller.removeById);
-//# sourceMappingURL=cart.router.js.map
+const controller = __importStar(require("../controllers/auth"));
+exports.authRoutes = express_1.default.Router();
+exports.authRoutes.post('/login', controller.login);
+exports.authRoutes.post('/registration', controller.registration);
+//# sourceMappingURL=auth.router.js.map

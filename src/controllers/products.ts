@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 
 import { Product } from "../models/product";
-import { Cart } from "../models/cart";
 
 export const getAll = async (req: Request, res: Response) => {
   try {
@@ -12,38 +11,53 @@ export const getAll = async (req: Request, res: Response) => {
   }
 }
 
-// add to cart product's id and count it
-const addToCart = async (id: string, count: number) => {
-  // if cart exit product
-  const product = await Cart.findOne({productId: id});
-  if (product) {
-    // increase count
-    await Cart.findByIdAndUpdate(product._id, {count: product.count + count});
-  } else {
-    // add new product to cart
-    const cart = new Cart({
-      count,
-      productId: id
-    });
-    await cart.save();
+export const getById = async (req: Request, res: Response) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    res.status(200).json(product);
+  } catch (e) {
+    res.status(404).send(e.message);
   }
 }
 
-export const addById = async (req: Request, res: Response) => {
-  const products = await Product.find();
-  const product = products.find(p => p._id.toString() === req.body.id);
-  if (product) {
-    try {
-      await addToCart(product._id, req.body.count);
-      res.status(201).json(product);
-      // tslint:disable-next-line:no-console
-      console.log(`Продукт "${product.name}" добавлен в корзину`);
-    } catch (e) {
-      res.status(404).send(e.message);
-    }
-  } else {
-    // tslint:disable-next-line:no-console
-    console.log(`Не найден продукт с таким кодом товара`);
-    res.status(204).json({});
+export const addNewProduct = async (req: Request, res: Response) => {
+  try {
+    const product = new Product({
+      prodCode: req.body.prodCode,
+      name: req.body.name,
+      price: req.body.price
+    });
+    await product.save()
+    res.status(201).json(product)
+  } catch (e) {
+    res.status(404).send(e.message);
+  }
+}
+
+export const update = async (req: Request, res: Response) => {
+   try {
+    const product = new Product({
+      prodCode: req.body.prodCode,
+      name: req.body.name,
+      price: req.body.price
+    });
+    await Product.findByIdAndUpdate(req.params.id,
+      {
+        prodCode: req.body.prodCode,
+        name: req.body.name,
+        price: req.body.price
+      })
+    res.status(200).json(product)
+  } catch (e) {
+    res.status(404).send(e.message);
+  }
+}
+
+export const removeById = async (req: Request, res: Response) => {
+  try {
+    const product = await Product.findByIdAndRemove(req.params.id);
+    res.status(200).json(product);
+  } catch (e) {
+    res.status(404).send(e.message);
   }
 }

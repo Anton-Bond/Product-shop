@@ -22,13 +22,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cartRoutes = void 0;
+exports.ordersRoutes = void 0;
 const express_1 = __importDefault(require("express"));
 const passport_1 = __importDefault(require("passport"));
-const controller = __importStar(require("../controllers/cart"));
-exports.cartRoutes = express_1.default.Router();
-exports.cartRoutes.get('/:id', passport_1.default.authenticate('jwt', { session: false }), controller.getByUserId);
-exports.cartRoutes.delete('/', passport_1.default.authenticate('jwt', { session: false }), controller.removeProd);
-exports.cartRoutes.post('/', passport_1.default.authenticate('jwt', { session: false }), controller.createOrder);
-exports.cartRoutes.delete('/:id', passport_1.default.authenticate('jwt', { session: false }), controller.removeById);
-//# sourceMappingURL=cart.router.js.map
+const controller = __importStar(require("../controllers/orders"));
+exports.ordersRoutes = express_1.default.Router();
+exports.ordersRoutes.get('/', passport_1.default.authenticate('jwt', { session: false }), controller.getAll);
+exports.ordersRoutes.get('/:id', passport_1.default.authenticate('jwt', { session: false }), controller.getById);
+exports.ordersRoutes.delete('/:id', passport_1.default.authenticate('jwt', { session: false }), controller.removeById);
+exports.ordersRoutes.post('/', passport_1.default.authenticate('jwt', { session: false }), controller.addById);
+//# sourceMappingURL=orders.router.js.map

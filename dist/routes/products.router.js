@@ -24,8 +24,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.productsRoutes = void 0;
 const express_1 = __importDefault(require("express"));
+const passport_1 = __importDefault(require("passport"));
 const controller = __importStar(require("../controllers/products"));
 exports.productsRoutes = express_1.default.Router();
-exports.productsRoutes.get('/', controller.getAll);
-exports.productsRoutes.post('/', controller.addById);
+exports.productsRoutes.get('/', passport_1.default.authenticate('jwt', { session: false }), controller.getAll);
+exports.productsRoutes.get('/:id', passport_1.default.authenticate('jwt', { session: false }), controller.getById);
+exports.productsRoutes.post('/', passport_1.default.authenticate('jwt', { session: false }), controller.addNewProduct);
+exports.productsRoutes.post('/:id', passport_1.default.authenticate('jwt', { session: false }), controller.update);
+exports.productsRoutes.delete('/:id', passport_1.default.authenticate('jwt', { session: false }), controller.removeById);
 //# sourceMappingURL=products.router.js.map

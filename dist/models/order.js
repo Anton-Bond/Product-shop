@@ -3,17 +3,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Cart = void 0;
+exports.Order = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
-const cartSchema = new mongoose_1.default.Schema({
+const orderSchema = new mongoose_1.default.Schema({
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    orderNum: Number,
     list: [
         {
+            name: String,
             count: Number,
-            productId: {
-                type: Schema.Types.ObjectId,
-                ref: 'Product'
-            }
+            price: Number
         }
     ],
     userId: {
@@ -21,5 +24,5 @@ const cartSchema = new mongoose_1.default.Schema({
         type: Schema.Types.ObjectId
     }
 });
-exports.Cart = mongoose_1.default.model('Cart', cartSchema);
-//# sourceMappingURL=cart.js.map
+exports.Order = mongoose_1.default.model('Order', orderSchema);
+//# sourceMappingURL=order.js.map

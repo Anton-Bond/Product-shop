@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+const Schema = mongoose.Schema;
+
 export type OrderDocument = mongoose.Document & {
   date: Date,
   orderNum: number,
@@ -10,7 +12,7 @@ export type OrderDocument = mongoose.Document & {
       price: number
     }
   ],
-  userId: number
+  userId: string
 };
 
 const orderSchema = new mongoose.Schema({
@@ -26,7 +28,10 @@ const orderSchema = new mongoose.Schema({
       price: Number
     }
   ],
-  userId: Number
+  userId: {
+    ref: 'User',
+    type: Schema.Types.ObjectId
+  }
 });
 
 export const Order = mongoose.model<OrderDocument>('Order', orderSchema);

@@ -3,15 +3,28 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export type CartDocument = mongoose.Document & {
-  count: number,
-  productId: string
+  list: [
+    {
+      count: number,
+      productId: string
+    }
+  ],
+  user: string
 };
 
 const cartSchema = new mongoose.Schema({
-  count: Number,
-  productId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Product'
+  list: [
+    {
+      count: Number,
+      productId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product'
+      }
+    }
+  ],
+  userId: {
+    ref: 'User',
+    type: Schema.Types.ObjectId
   }
 });
 
